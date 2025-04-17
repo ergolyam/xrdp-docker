@@ -39,6 +39,10 @@ if [ -n "$TZ" ] && [ -f "/usr/share/zoneinfo/$TZ" ]; then
   echo "$TZ" > /etc/timezone
 fi
 
+if [ "${PORT:-}" ]; then
+  sed -i -E "s/^port=3389$/port=${PORT}/" /etc/xrdp/xrdp.ini
+fi
+
 /usr/sbin/xrdp-sesman -n &
 SESMAN_PID=$!
 
