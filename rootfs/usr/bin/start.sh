@@ -43,6 +43,12 @@ if [ "${PORT:-}" ]; then
   sed -i -E "s/^port=3389$/port=${PORT}/" /etc/xrdp/xrdp.ini
 fi
 
+if [ "${DISPLAY:-}" ]; then
+  echo "Use X DISPLAY: $DISPLAY"
+  sed -i -E "s/^X11DisplayOffset=10$/X11DisplayOffset=${DISPLAY}/" /etc/xrdp/sesman.ini
+  sed -i "s/^export DISPLAY=:10/export DISPLAY=:${DISPLAY}/" /etc/xrdp/startwm.sh
+fi
+
 /usr/sbin/xrdp-sesman -n &
 SESMAN_PID=$!
 
