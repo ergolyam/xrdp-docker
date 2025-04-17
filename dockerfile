@@ -9,7 +9,8 @@ RUN apk add --no-cache \
        icewm \
        xkeyboard-config \
        setxkbmap \
-       tzdata
+       tzdata \
+       xdg-utils
 
 ENV TZ=UTC
 
