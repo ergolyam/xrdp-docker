@@ -43,8 +43,6 @@ Treat it like an _appliance_ you can build on—add your application and you are
                 xrdp-xterm
     ```
 
-- Connect with any RDP client (username **demo**, password **secret**) you will land in a maximised `xterm`.
-
 - Other working env's:
     ```env
     USER="username"
@@ -52,6 +50,8 @@ Treat it like an _appliance_ you can build on—add your application and you are
     TZ="Europe/Moscow"
     DARK_MODE=true
     ```
+
+- Connect with any RDP client (username **demo**, password **secret**) you will land in a maximised `xterm`.
 
 ## Hooks you can use
 
