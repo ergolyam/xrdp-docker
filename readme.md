@@ -50,6 +50,7 @@ Treat it like an appliance you can build on add your application and you are don
     TZ="Europe/Moscow"
     DARK_MODE=true
     PORT=3389
+    DISPLAY=10
     ```
 
 - Connect to **`localhost:3389`** with any RDP client (username **demo**, password **secret**) you will land in a maximised `xterm`.
