@@ -51,7 +51,7 @@ Treat it like an _appliance_ you can build on—add your application and you are
     DARK_MODE=true
     ```
 
-- Connect with any RDP client (username **demo**, password **secret**) you will land in a maximised `xterm`.
+- Connect to **`localhost:3389`** with any RDP client (username **demo**, password **secret**) you will land in a maximised `xterm`.
 
 ## Hooks you can use
 
