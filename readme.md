@@ -9,7 +9,7 @@ Treat it like an _appliance_ you can build on—add your application and you are
 
 - Below is the **minimal pattern** you will use over and over:
     ```dockerfile
-    FROM ghcr.io/grisha765/docker-xrdp:latest  # <‑‑ the base image
+    FROM ghcr.io/grisha765/xrdp-docker:latest  # <‑‑ the base image
 
     RUN apk add --no-cache xterm # pull in the GUI program(s) you need
     COPY startapp.sh /startapp.sh # launcher that XRDP will run
