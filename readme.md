@@ -1,6 +1,6 @@
 # xrdp-docker
-This project provides a **tiny Alpine Linux image that boots straight into an XRDP + IceWM session** and then immediately runs whatever GUI program you supply.  
-Treat it like an _appliance_ you can build on—add your application and you are done.
+This project provides a **tiny image that boots straight into an XRDP + IceWM session** and then immediately runs whatever GUI program you supply.  
+Treat it like an appliance you can build on add your application and you are done.
 
 > **Why a “base image”?**  
 > There are many GUI apps, but only one piece of XRDP plumbing is needed for all of them.  By pulling this image as a parent you keep your own image slim (most of the weight is fonts and XRDP itself) and you can focus on shipping **your** program.
