@@ -1,0 +1,21 @@
+#!/usr/bin/env ash
+sleep 1
+
+if [ ! -f /startapp.sh ]; then
+  icesh logout
+fi
+
+/startapp.sh &
+pid=$!
+
+(
+    while :; do
+        win=$(icesh -a -P _NET_WM_PID="$pid" id 2>/dev/null)
+        [ -n "$win" ] && { icesh -window "$win" maximize activate; break; }
+        sleep 0.05
+    done
+) &
+
+wait "$pid"
+
+icesh logout 
