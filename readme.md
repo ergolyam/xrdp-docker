@@ -12,6 +12,9 @@ Treat it like an _appliance_ you can build on—add your application and you are
     FROM ghcr.io/grisha765/xrdp-docker:latest  # <‑‑ the base image
 
     RUN apk add --no-cache xterm # pull in the GUI program(s) you need
+
+    RUN chmod +x /startapp.sh # permission to run
+
     COPY startapp.sh /startapp.sh # launcher that XRDP will run
     ```
     - Example `startapp.sh`:
@@ -46,7 +49,8 @@ Treat it like an _appliance_ you can build on—add your application and you are
     ```env
     USER="username"
     PASSWD="password"
-    TZ=Europe/Moscow
+    TZ="Europe/Moscow"
+    DARK_MODE=true
     ```
 
 ## Hooks you can use
