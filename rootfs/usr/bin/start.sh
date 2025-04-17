@@ -14,6 +14,10 @@ fi
 : "${USER:?env USER is not set}"
 : "${PASSWD:?env PASSWD is not set}"
 
+if [ "${DARK_MODE:-}" = "true" ]; then
+  touch /tmp/darkmode
+fi
+
 if ! id "$USER" >/dev/null 2>&1; then
   adduser -D "$USER"
 fi
