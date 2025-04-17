@@ -61,5 +61,5 @@ Treat it like an appliance you can build on add your application and you are don
 ## Features
 
 - **No VNC hop**: uses `xrdp` + `xorgxrdp`; clients see a native RDP server on port 3389.
-- **IceWM kiosk mode**: no task‑bar, no start menu—your app is full‑screen.
+- **IceWM kiosk mode**: no task‑bar, no start menu your app is full‑screen.
 - **Environment‑driven**: just supply `USER`, `PASSWD`, `/startapp.sh`.
