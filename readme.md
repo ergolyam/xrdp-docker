@@ -38,8 +38,8 @@ Treat it like an appliance you can build on add your application and you are don
     ```bash
     docker run -p 3389:3389 \
                 -e USER=demo -e PASSWD=secret \
-                -v /path/to/key.pem:/key.pem:O \
-                -v /path/to/cert.pem:/cert.pem:O \
+                -v /path/to/key.pem:/key.pem:ro \
+                -v /path/to/cert.pem:/cert.pem:ro \
                 xrdp-xterm
     ```
 
