@@ -43,17 +43,20 @@ Treat it like an appliance you can build on add your application and you are don
                 xrdp-xterm
     ```
 
-- Other working env's:
-    ```env
-    USER="username"
-    PASSWD="password"
-    TZ="Europe/Moscow"
-    DARK_MODE=true
-    PORT=3389
-    DISPLAY=10
-    ```
-
 - Connect to **`localhost:3389`** with any RDP client (username **demo**, password **secret**) you will land in a maximised `xterm`.
+
+## Environment Variables
+
+The container is controlled via the following environment variables:
+
+| Variable     | Description |
+|--------------|-------------|
+| `USER`       | Username for the RDP session. The specified user will be created automatically. |
+| `PASSWD`     | Password for the RDP session user. |
+| `TZ`         | (Optional) Time zone for the container (e.g. `Europe/Moscow`). |
+| `DARK_MODE`  | (Optional) If set to `true`, enables dark theme support (if your app or setup supports it). |
+| `PORT`       | (Optional) Port that XRDP will listen on (default is `3389`). |
+| `DISPLAY`    | (Optional) Display number used by the X server. Useful when running multiple containers. |
 
 ## Hooks you can use
 
@@ -65,3 +68,11 @@ Treat it like an appliance you can build on add your application and you are don
 - **No VNC hop**: uses `xrdp` + `xorgxrdp`; clients see a native RDP server on port 3389.
 - **IceWM kiosk mode**: no task‑bar, no start menu your app is full‑screen.
 - **Environment‑driven**: just supply `USER`, `PASSWD`, `/startapp.sh`.
+
+## Projects Using This Image
+
+Here are some example projects built on top of `xrdp-docker`:
+
+- [**xrdp-firefox**](https://github.com/grisha765/xrdp-firefox) – A minimal container that launches Firefox in a remote desktop session via XRDP.
+
+> Have you built something with `xrdp-docker`? Feel free to open a PR and add your project here!
