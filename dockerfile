@@ -6,10 +6,12 @@ ARG PKG_DIR
 
 ARG XRDP_VER=v0.10.3
 
+ARG XORGRDP_VER=v0.10.4
+
 RUN apk add --no-cache build-base git autoconf automake check-dev cmocka-dev libtool openssl-dev \
     libx11-dev libxfixes-dev libxrandr-dev libjpeg-turbo-dev \
     linux-headers nasm linux-pam-dev opus-dev libdrm-dev \
-    xorg-server-dev openh264-dev x264-dev
+    xorg-server-dev openh264-dev
 
 WORKDIR /build/xrdp
 RUN git clone --depth 1 -b $XRDP_VER https://github.com/neutrinolabs/xrdp.git .
@@ -25,7 +27,6 @@ RUN ./configure --prefix=/usr \
     --sbindir=/usr/sbin \
     --enable-ipv6 \
     --enable-openh264 \
-    --enable-x264 \
     --enable-opus \
     --enable-pam \
     --enable-tjpeg \
@@ -37,12 +38,13 @@ RUN wget -O $PKG_DIR/etc/xrdp/openssl.conf https://gitlab.alpinelinux.org/alpine
 RUN rm -f $PKG_DIR/etc/xrdp/*.pem $PKG_DIR/etc/xrdp/rsakeys.ini
 
 WORKDIR /build/xorgxrdp
-RUN git clone --depth 1 -b $XRDP_VER https://github.com/neutrinolabs/xorgxrdp.git .
+RUN git clone --depth 1 -b $XORGRDP_VER https://github.com/neutrinolabs/xorgxrdp.git .
 RUN ./bootstrap
 RUN ./configure --prefix=/usr \
     --sysconfdir=/etc \
     --mandir=/usr/share/man \
-    --localstatedir=/var
+    --localstatedir=/var \
+    --without-simd
 RUN make -j$(nproc)
 RUN make install && make DESTDIR=$PKG_DIR install
 
@@ -64,7 +66,6 @@ RUN apk add --no-cache \
     libjpeg-turbo \
     libturbojpeg \
     openh264 \
-    x264-libs \
     opus \
     libdrm
 
