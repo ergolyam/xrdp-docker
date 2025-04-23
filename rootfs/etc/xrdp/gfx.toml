@@ -1,18 +1,46 @@
 [codec]
-order = [ "H.264", "RFX" ]
-h264_encoder = "x264"
+order        = [ "H.264", "RFX" ]
+h264_encoder = "OpenH264"
 
-[x264.default]
-preset = "ultrafast"
-tune = "zerolatency"
-profile = "main"
-vbv_max_bitrate = 0
-vbv_buffer_size = 0
-fps_num = 60
-fps_den = 1
+[OpenH264.default]
+TargetBitrate    = 8000000
+MaxBitrate       = 15000000
+MaxFrameRate     = 60
+EnableFrameSkip  = true
 
-[x264.lan]
-[x264.wan]
-preset = "veryfast"
-vbv_max_bitrate = 15_000
-vbv_buffer_size = 1_500
+[OpenH264.lan]
+TargetBitrate    = 8000000
+MaxBitrate       = 15000000
+MaxFrameRate     = 60
+EnableFrameSkip  = false
+
+[OpenH264.wan]
+TargetBitrate    = 4000000
+MaxBitrate       = 6000000
+MaxFrameRate     = 30
+EnableFrameSkip  = true
+
+[OpenH264.broadband_high]
+TargetBitrate    = 5000000
+MaxBitrate       = 8000000
+MaxFrameRate     = 30
+EnableFrameSkip  = true
+
+[OpenH264.satellite]
+TargetBitrate    = 3000000
+MaxBitrate       = 6000000
+MaxFrameRate     = 24
+EnableFrameSkip  = true
+
+[OpenH264.broadband_low]
+TargetBitrate    = 2000000
+MaxBitrate       = 3000000
+MaxFrameRate     = 20
+EnableFrameSkip  = true
+
+[OpenH264.modem]
+TargetBitrate    = 120000
+MaxBitrate       = 160000
+MaxFrameRate     = 10
+EnableFrameSkip  = true
+
