@@ -4,19 +4,19 @@ h264_encoder = "OpenH264"
 
 [OpenH264.default]
 TargetBitrate    = 8000000
-MaxBitrate       = 15000000
-MaxFrameRate     = 60
+MaxBitrate       = 10000000
+MaxFrameRate     = 30
 EnableFrameSkip  = true
 
 [OpenH264.lan]
-TargetBitrate    = 8000000
-MaxBitrate       = 15000000
+TargetBitrate    = 12000000
+MaxBitrate       = 18000000
 MaxFrameRate     = 60
 EnableFrameSkip  = false
 
 [OpenH264.wan]
-TargetBitrate    = 4000000
-MaxBitrate       = 6000000
+TargetBitrate    = 6000000
+MaxBitrate       = 8000000
 MaxFrameRate     = 30
 EnableFrameSkip  = true
 
@@ -26,21 +26,21 @@ MaxBitrate       = 8000000
 MaxFrameRate     = 30
 EnableFrameSkip  = true
 
-[OpenH264.satellite]
-TargetBitrate    = 3000000
-MaxBitrate       = 6000000
+[OpenH264.broadband_low]
+TargetBitrate    = 2000000
+MaxBitrate       = 3000000
 MaxFrameRate     = 24
 EnableFrameSkip  = true
 
-[OpenH264.broadband_low]
-TargetBitrate    = 2000000
+[OpenH264.satellite]
+TargetBitrate    = 1500000
 MaxBitrate       = 3000000
 MaxFrameRate     = 20
 EnableFrameSkip  = true
 
 [OpenH264.modem]
-TargetBitrate    = 120000
-MaxBitrate       = 160000
-MaxFrameRate     = 10
+TargetBitrate    = 256000
+MaxBitrate       = 384000
+MaxFrameRate     = 12
 EnableFrameSkip  = true
 
