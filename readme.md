@@ -57,6 +57,7 @@ The container is controlled via the following environment variables:
 | `DARK_MODE`  | (Optional) If set to `true`, enables dark theme support (if your app or setup supports it). |
 | `PORT`       | (Optional) Port that XRDP will listen on (default is `3389`). |
 | `DISPLAY`    | (Optional) Display number used by the X server. Useful when running multiple containers. |
+| `LOGOUT_TIMEOUT` | (Optional) Set the inactivity time before exiting the session. |
 
 ## Hooks you can use
 
