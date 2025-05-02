@@ -18,6 +18,10 @@ if [ "${DARK_MODE:-}" = "true" ]; then
   touch /tmp/darkmode
 fi
 
+if [ -n "${LOGOUT_TIMEOUT:-}" ]; then
+  echo $LOGOUT_TIMEOUT > /tmp/timeout
+fi
+
 if ! id "$USER" >/dev/null 2>&1; then
   adduser -D "$USER"
 fi
