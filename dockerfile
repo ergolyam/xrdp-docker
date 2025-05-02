@@ -59,6 +59,7 @@ RUN apk add --no-cache \
     xorg-server \
     icewm \
     xkeyboard-config \
+    xautolock \
     setxkbmap \
     tzdata \
     xdg-utils \
