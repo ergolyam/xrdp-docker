@@ -9,7 +9,7 @@ Treat it like an appliance you can build on add your application and you are don
 
 - Below is the **minimal pattern** you will use over and over:
     ```dockerfile
-    FROM ghcr.io/grisha765/xrdp-docker:latest  # <‑‑ the base image
+    FROM ghcr.io/ergolyam/xrdp-docker:latest  # <‑‑ the base image
 
     RUN apk add --no-cache xterm # pull in the GUI program(s) you need
 
@@ -74,6 +74,6 @@ The container is controlled via the following environment variables:
 
 Here are some example projects built on top of `xrdp-docker`:
 
-- [**xrdp-firefox**](https://github.com/grisha765/xrdp-firefox) – A minimal container that launches Firefox in a remote desktop session via XRDP.
+- [**xrdp-firefox**](https://github.com/ergolyam/xrdp-firefox) – A minimal container that launches Firefox in a remote desktop session via XRDP.
 
 > Have you built something with `xrdp-docker`? Feel free to open a PR and add your project here!
