@@ -1,7 +1,11 @@
 ARG ALPINE_VERSION=latest
 ARG PKG_DIR=/xrdp-install
 
-FROM alpine:${ALPINE_VERSION} AS builder
+FROM alpine:${ALPINE_VERSION} AS base
+
+FROM base AS builder
+
+ARG PKG_DIR
 
 ARG XRDP_VER=v0.10.3
 
@@ -48,7 +52,7 @@ RUN make -j$(nproc)
 RUN make install && make DESTDIR=$PKG_DIR install
 
 
-FROM alpine:${ALPINE_VERSION} AS main
+FROM base AS main
 
 ARG PKG_DIR
 
