@@ -13,9 +13,9 @@ Treat it like an appliance you can build on add your application and you are don
 
     RUN apk add --no-cache xterm # pull in the GUI program(s) you need
 
-    RUN chmod +x /startapp.sh # permission to run
-
     COPY startapp.sh /startapp.sh # launcher that XRDP will run
+
+    RUN chmod +x /startapp.sh # permission to run
     ```
     - Example `startapp.sh`:
         ```bash
