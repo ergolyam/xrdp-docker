@@ -11,10 +11,8 @@ ARG XRDP_VER=v0.10.3
 
 ARG XORGRDP_VER=v0.10.4
 
-RUN apk add --no-cache build-base git autoconf automake check-dev cmocka-dev libtool openssl-dev \
-    libx11-dev libxfixes-dev libxrandr-dev libjpeg-turbo-dev \
-    linux-headers nasm linux-pam-dev opus-dev libdrm-dev \
-    xorg-server-dev openh264-dev
+COPY install-deps.sh ./install-deps.sh
+RUN ./install-deps.sh alpine builder
 
 WORKDIR /build/xrdp
 RUN git clone --depth 1 -b $XRDP_VER https://github.com/neutrinolabs/xrdp.git .
@@ -56,22 +54,8 @@ FROM base AS main
 
 ARG PKG_DIR
 
-RUN apk add --no-cache \
-    openssl \
-    dbus \
-    xorg-server \
-    icewm \
-    xkeyboard-config \
-    xautolock \
-    setxkbmap \
-    tzdata \
-    xdg-utils \
-    linux-pam \
-    libjpeg-turbo \
-    libturbojpeg \
-    openh264 \
-    opus \
-    libdrm
+COPY install-deps.sh ./install-deps.sh
+RUN ./install-deps.sh alpine main
 
 COPY --from=builder $PKG_DIR/ /
 
