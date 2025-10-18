@@ -1,9 +1,14 @@
-ARG ALPINE_VERSION=latest
+ARG VERSION=latest
+ARG DIST=alpine
+
 ARG PKG_DIR=/xrdp-install
 
-FROM alpine:${ALPINE_VERSION} AS base
+FROM ${DIST}:${VERSION} AS base
+
 
 FROM base AS builder
+
+ARG DIST
 
 ARG PKG_DIR
 
@@ -12,13 +17,14 @@ ARG XRDP_VER=v0.10.3
 ARG XORGRDP_VER=v0.10.4
 
 COPY install-deps.sh ./install-deps.sh
-RUN ./install-deps.sh alpine builder
+RUN ./install-deps.sh ${DIST} builder
 
 WORKDIR /build/xrdp
 RUN git clone --depth 1 -b $XRDP_VER https://github.com/neutrinolabs/xrdp.git .
-RUN wget https://gitlab.alpinelinux.org/alpine/aports/-/raw/89dc4b937a7591002c9f8d437d0efe4eabaeea99/community/xrdp/dynamic-link.patch
-RUN wget https://gitlab.alpinelinux.org/alpine/aports/-/raw/89dc4b937a7591002c9f8d437d0efe4eabaeea99/community/xrdp/remove-werror.patch
-RUN patch -p1 < ./dynamic-link.patch && patch -p1 < ./remove-werror.patch
+RUN [ "${DIST}" = "debian" ] || wget https://gitlab.alpinelinux.org/alpine/aports/-/raw/89dc4b937a7591002c9f8d437d0efe4eabaeea99/community/xrdp/dynamic-link.patch
+RUN [ "${DIST}" = "debian" ] || wget https://gitlab.alpinelinux.org/alpine/aports/-/raw/89dc4b937a7591002c9f8d437d0efe4eabaeea99/community/xrdp/remove-werror.patch
+RUN [ "${DIST}" = "debian" ] || patch -p1 < ./dynamic-link.patch
+RUN [ "${DIST}" = "debian" ] || patch -p1 < ./remove-werror.patch
 RUN sed -i 's|^param=Xorg|param=/usr/libexec/Xorg|' sesman/sesman.ini.in
 RUN ./bootstrap
 RUN ./configure --prefix=/usr \
@@ -52,10 +58,12 @@ RUN make install && make DESTDIR=$PKG_DIR install
 
 FROM base AS main
 
+ARG DIST
+
 ARG PKG_DIR
 
 COPY install-deps.sh ./install-deps.sh
-RUN ./install-deps.sh alpine main
+RUN ./install-deps.sh ${DIST} main
 
 COPY --from=builder $PKG_DIR/ /
 

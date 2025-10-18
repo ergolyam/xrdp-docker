@@ -44,6 +44,59 @@ case "${DISTRO}_${TARGET}" in
         opus \
         libdrm
       ;;
+    debian_builder)
+      apt-get update -y
+      apt-get install -y --no-install-recommends \
+        ca-certificates \
+        wget \
+        build-essential \
+        git \
+        autoconf \
+        automake \
+        check \
+        libturbojpeg0-dev \
+        libcmocka-dev \
+        libopus-dev \
+        libpam0g-dev \
+        libssl-dev \
+        libtool \
+        libx11-dev \
+        libxfixes-dev \
+        libxrandr-dev \
+        libdrm-dev \
+        xserver-xorg-dev \
+        nasm \
+        libpam0g-dev \
+        libopus-dev \
+        libdrm-dev \
+        pkgconf \
+        libopenh264-dev
+      rm -rf /var/lib/apt/lists/*
+      ;;
+    debian_main)
+      apt-get update -y
+      apt-get install -y --no-install-recommends \
+        busybox \
+        ca-certificates \
+        wget \
+        openssl \
+        dbus \
+        xserver-xorg-core \
+        icewm \
+        xkb-data \
+        xautolock \
+        x11-xkb-utils \
+        tzdata \
+        xdg-utils \
+        libpam0g \
+        libjpeg62-turbo \
+        libturbojpeg0 \
+        libopenh264-7 \
+        libopus0 \
+        libdrm2
+      rm -rf /var/lib/apt/lists/*
+      ln -sf /bin/busybox /bin/ash
+      ;;
 esac
 
 echo "Cleaning up: removing $0"
