@@ -23,7 +23,11 @@ if [ -n "${LOGOUT_TIMEOUT:-}" ]; then
 fi
 
 if ! id "$USER" >/dev/null 2>&1; then
-  adduser -D "$USER"
+  if adduser --help 2>&1 | grep -q -- '-D'; then
+    adduser -D "$USER"
+  else
+    adduser --disabled-password --gecos "" "$USER"
+  fi
 fi
 
 UID=$(id -u "$USER")
