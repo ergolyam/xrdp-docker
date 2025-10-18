@@ -25,7 +25,13 @@ RUN [ "${DIST}" = "debian" ] || wget https://gitlab.alpinelinux.org/alpine/aport
 RUN [ "${DIST}" = "debian" ] || wget https://gitlab.alpinelinux.org/alpine/aports/-/raw/89dc4b937a7591002c9f8d437d0efe4eabaeea99/community/xrdp/remove-werror.patch
 RUN [ "${DIST}" = "debian" ] || patch -p1 < ./dynamic-link.patch
 RUN [ "${DIST}" = "debian" ] || patch -p1 < ./remove-werror.patch
-RUN sed -i 's|^param=Xorg|param=/usr/libexec/Xorg|' sesman/sesman.ini.in
+
+RUN if [ "$DIST" = "alpine" ]; then \
+      sed -i 's|^param=Xorg|param=/usr/libexec/Xorg|' sesman/sesman.ini.in; \
+    elif [ "$DIST" = "debian" ]; then \
+      sed -i 's|^param=Xorg|param=/usr/lib/xorg/Xorg|' sesman/sesman.ini.in; \
+    fi
+
 RUN ./bootstrap
 RUN ./configure --prefix=/usr \
     --disable-static \
