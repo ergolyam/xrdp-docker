@@ -15,7 +15,23 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        alpine: ["3.19", "3.20", "latest", "edge"]
+        include:
+          # alpine
+          - dist: alpine
+            version: "3.19"
+          - dist: alpine
+            version: "3.20"
+          - dist: alpine
+            version: "3.21"
+          - dist: alpine
+            version: "3.22"
+          - dist: alpine
+            version: "latest"
+          - dist: alpine
+            version: "edge"
+          # debian
+          - dist: debian
+            version: "12-slim"
 
     steps:
       - name: Checkout code
@@ -28,19 +44,32 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Determine the Docker tag
+        id: get_tag
+        run: |
+          if [[ "${BASE}" == "alpine-latest" ]]; then
+            echo "tag=latest ${BASE}" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=${BASE}" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          BASE: ${{ matrix.dist }}-${{ matrix.version }}
+
       - name: Build Container image
         uses: redhat-actions/buildah-build@v2
         with:
           image: ghcr.io/${{ github.repository }}
-          tags: ${{ matrix.alpine }}
+          tags: ${{ steps.get_tag.outputs.tag }}
           containerfiles: ./dockerfile
-          build-args: ALPINE_VERSION=${{ matrix.alpine }}
+          build-args: |
+            DIST=${{ matrix.dist }}
+            VERSION=${{ matrix.version }}
 
       - name: Push image to GHCR
         uses: redhat-actions/push-to-registry@v2
         with:
           image: ghcr.io/${{ github.repository }}
-          tags: ${{ matrix.alpine }}
+          tags: ${{ steps.get_tag.outputs.tag }}
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
