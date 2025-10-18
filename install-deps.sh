@@ -24,7 +24,7 @@ case "${DISTRO}_${TARGET}" in
         opus-dev \
         libdrm-dev \
         xorg-server-dev \
-        openh264-dev
+        openh264-dev || exit 1
       ;;
     alpine_main)
       apk add --no-cache \
@@ -42,7 +42,7 @@ case "${DISTRO}_${TARGET}" in
         libturbojpeg \
         openh264 \
         opus \
-        libdrm
+        libdrm || exit 1
       ;;
     debian_builder)
       apt-get update -y
@@ -70,7 +70,7 @@ case "${DISTRO}_${TARGET}" in
         libopus-dev \
         libdrm-dev \
         pkgconf \
-        libopenh264-dev
+        libopenh264-dev || exit 1
       rm -rf /var/lib/apt/lists/*
       ;;
     debian_main)
@@ -93,7 +93,7 @@ case "${DISTRO}_${TARGET}" in
         libturbojpeg0 \
         libopenh264-7 \
         libopus0 \
-        libdrm2
+        libdrm2 || exit 1
       rm -rf /var/lib/apt/lists/*
       ln -sf /bin/busybox /bin/ash
       ;;
