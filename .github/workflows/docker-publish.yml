@@ -12,6 +12,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        alpine: ["3.18", "3.19", "3.20", "latest"]
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -23,28 +28,19 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Determine the Docker tag
-        id: get_tag
-        run: |
-          echo "::set-output name=image::ghcr.io/${{ github.repository }}"
-          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
-            echo "::set-output name=tag::latest"
-          elif [ "${{ github.ref }}" == "refs/heads/dev" ]; then
-            echo "::set-output name=tag::${{ github.sha }}"
-          fi
-
       - name: Build Container image
         uses: redhat-actions/buildah-build@v2
         with:
-          image: ${{ steps.get_tag.outputs.image }}
-          tags: ${{ steps.get_tag.outputs.tag }}
+          image: ghcr.io/${{ github.repository }}
+          tags: ${{ matrix.alpine }}
           containerfiles: ./dockerfile
+          build-args: ALPINE_VERSION=${{ matrix.alpine }}
 
       - name: Push image to GHCR
         uses: redhat-actions/push-to-registry@v2
         with:
-          image: ${{ steps.get_tag.outputs.image }}
-          tags: ${{ steps.get_tag.outputs.tag }}
+          image: ghcr.io/${{ github.repository }}
+          tags: ${{ matrix.alpine }}
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
