@@ -19,7 +19,7 @@ Treat it like an appliance you can build on add your application and you are don
     ```
     - Example `startapp.sh`:
         ```bash
-        #!/usr/bin/env ash
+        #!/usr/bin/env sh
         exec xterm # start your GUI; exit → session ends
         ```
 

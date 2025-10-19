@@ -76,7 +76,6 @@ case "${DISTRO}_${TARGET}" in
     debian_main)
       apt-get update -y
       apt-get install -y --no-install-recommends \
-        busybox \
         ca-certificates \
         wget \
         openssl \
@@ -95,7 +94,6 @@ case "${DISTRO}_${TARGET}" in
         libopus0 \
         libdrm2 || exit 1
       rm -rf /var/lib/apt/lists/*
-      ln -sf /bin/busybox /bin/ash
       ;;
 esac
 

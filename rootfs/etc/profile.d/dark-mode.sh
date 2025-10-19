@@ -1,4 +1,4 @@
-#!/usr/bin/env ash
+#!/usr/bin/env sh
 
 if [ -f /tmp/darkmode ]; then
     export GTK_THEME="Adwaita:dark"
