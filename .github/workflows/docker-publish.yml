@@ -32,6 +32,8 @@ jobs:
           # debian
           - dist: debian
             version: "12-slim"
+          - dist: debian
+            version: "13-slim"
 
     steps:
       - name: Checkout code
