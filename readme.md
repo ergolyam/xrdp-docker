@@ -62,7 +62,7 @@ The container is controlled via the following environment variables:
 ## Hooks you can use
 
 * **`/entrypoint.sh`** – Runs before starting xrdp, after creating a user, suitable for creating base directories and granting permissions to the user.
-* **`/startapp.sh`** – Rust exist; it is launched by IceWM after login. When it exits, the session logs out and the container shuts down.
+* **`/startapp.sh`** – Runs exist; it is launched by IceWM after login. When it exits, the session logs out and the container shuts down.
 
 ## Features
 
