@@ -20,7 +20,7 @@ Treat it like an appliance you can build on add your application and you are don
     - Example `startapp.sh`:
         ```bash
         #!/usr/bin/env sh
-        exec xterm # start your GUI; exit → session ends
+        exec xterm # start your GUI; exit -> session ends
         ```
 
 - Build & run:
@@ -77,3 +77,11 @@ Here are some example projects built on top of `xrdp-docker`:
 - [**xrdp-firefox**](https://github.com/ergolyam/xrdp-firefox) – A minimal container that launches Firefox in a remote desktop session via XRDP.
 
 > Have you built something with `xrdp-docker`? Feel free to open a PR and add your project here!
+
+## License
+
+This program is free software: you can redistribute it and/or modify it under the terms of the **GNU General Public License, version 3 or (at your option) any later version** published by the Free Software Foundation.
+
+Copyright © 2025 ergolyam
+
+See the full license text in the [LICENSE](license) file or online at <https://www.gnu.org/licenses/gpl-3.0.txt>.
