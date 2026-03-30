@@ -12,9 +12,9 @@ ARG DIST
 
 ARG PKG_DIR
 
-ARG XRDP_VER=v0.10.3
+ARG XRDP_VER=v0.10.5
 
-ARG XORGRDP_VER=v0.10.4
+ARG XORGRDP_VER=v0.10.5
 
 COPY install-deps.sh ./install-deps.sh
 RUN ./install-deps.sh ${DIST} builder
