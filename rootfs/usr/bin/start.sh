@@ -36,6 +36,8 @@ if [ -f /entrypoint.sh ]; then
   /entrypoint.sh
 fi
 
+/usr/bin/set-layout.sh
+
 if [ ! -f /etc/machine-id ]; then
   mkdir -p /var/run/dbus
   dbus-uuidgen --ensure
@@ -84,4 +86,3 @@ while kill -0 "$XRDP_PID" 2>/dev/null && kill -0 "$SESMAN_PID" 2>/dev/null; do
   sleep 1
 done
 term_handler
-

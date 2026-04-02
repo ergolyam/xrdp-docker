@@ -58,6 +58,8 @@ The container is controlled via the following environment variables:
 | `PORT`       | (Optional) Port that XRDP will listen on (default is `3389`). |
 | `DISPLAY`    | (Optional) Display number used by the X server. Useful when running multiple containers. |
 | `LOGOUT_TIMEOUT` | (Optional) Set the inactivity time before exiting the session. |
+| `XKBMAP_LAYOUT` | (Optional) Enables keyboard layout switching between `us` and the specified XKB layout (for example `ru`). |
+| `XKBMAP_OPTION` | (Optional) XKB option string used for layout switching (default: `grp:win_space_toggle`). |
 
 ## Hooks you can use
 
@@ -69,6 +71,7 @@ The container is controlled via the following environment variables:
 - **No VNC hop**: uses `xrdp` + `xorgxrdp`; clients see a native RDP server on port 3389.
 - **IceWM kiosk mode**: no task‑bar, no start menu your app is full‑screen.
 - **Environment‑driven**: just supply `USER`, `PASSWD`, `/startapp.sh`.
+- **Optional keyboard layout switcher**: set `XKBMAP_LAYOUT=ru` to toggle between `us` and `ru`.
 
 ## Projects Using This Image
 
