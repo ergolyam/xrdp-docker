@@ -26,6 +26,10 @@ jobs:
           - dist: alpine
             version: "3.22"
           - dist: alpine
+            version: "3.23"
+          - dist: alpine
+            version: "3.24"
+          - dist: alpine
             version: "latest"
           - dist: alpine
             version: "edge"
