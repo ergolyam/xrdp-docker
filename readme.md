@@ -80,7 +80,7 @@ The container is controlled via the following environment variables:
 The GitHub workflow currently publishes these tags:
 
 - `latest` (alias for `alpine-latest`)
-- `alpine-3.19`, `alpine-3.20`, `alpine-3.21`, `alpine-3.22`, `alpine-latest`, `alpine-edge`
+- `alpine-3.19`, `alpine-3.20`, `alpine-3.21`, `alpine-3.22`, `alpine-3.23`, `alpine-3.24`, `alpine-latest`, `alpine-edge`
 - `debian-12-slim`, `debian-13-slim`
 
 ## Projects Using This Image
@@ -88,6 +88,7 @@ The GitHub workflow currently publishes these tags:
 Here are some example projects built on top of `xrdp-docker`:
 
 - [**xrdp-firefox**](https://github.com/ergolyam/xrdp-firefox) – A minimal container that launches Firefox in a remote desktop session via XRDP.
+- [**xrdp-alfis**](https://github.com/ergolyam/xrdp-alfis) – A minimal container that launches Alfis in a remote desktop session via XRDP.
 
 > Have you built something with `xrdp-docker`? Feel free to open a PR and add your project here!
 
