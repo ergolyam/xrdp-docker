@@ -41,10 +41,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
 
       - name: Log in to GitHub Container Registry
-        uses: redhat-actions/podman-login@v1
+        uses: redhat-actions/podman-login@2e76993ec4585e058ea832c23ee3d885970936af
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -62,7 +62,7 @@ jobs:
           BASE: ${{ matrix.dist }}-${{ matrix.version }}
 
       - name: Build Container image
-        uses: redhat-actions/buildah-build@v2
+        uses: redhat-actions/buildah-build@061ffd31bb5c3f8733a6f9bbdf00a9fb02eb708c
         with:
           image: ghcr.io/${{ github.repository }}
           tags: ${{ steps.get_tag.outputs.tag }}
@@ -72,7 +72,7 @@ jobs:
             VERSION=${{ matrix.version }}
 
       - name: Push image to GHCR
-        uses: redhat-actions/push-to-registry@v2
+        uses: redhat-actions/push-to-registry@3916dcf329473955be3059ef62c9c062ea1b9054
         with:
           image: ghcr.io/${{ github.repository }}
           tags: ${{ steps.get_tag.outputs.tag }}
