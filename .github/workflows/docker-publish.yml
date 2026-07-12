@@ -10,34 +10,23 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-
+    name: Build ${{ matrix.base }} (${{ matrix.arch }})
     strategy:
       fail-fast: false
       matrix:
-        include:
-          # alpine
-          - dist: alpine
-            version: "3.19"
-          - dist: alpine
-            version: "3.20"
-          - dist: alpine
-            version: "3.21"
-          - dist: alpine
-            version: "3.22"
-          - dist: alpine
-            version: "3.23"
-          - dist: alpine
-            version: "3.24"
-          - dist: alpine
-            version: "latest"
-          - dist: alpine
-            version: "edge"
-          # debian
-          - dist: debian
-            version: "12-slim"
-          - dist: debian
-            version: "13-slim"
+        base:
+          - alpine-3.19
+          - alpine-3.20
+          - alpine-3.21
+          - alpine-3.22
+          - alpine-3.23
+          - alpine-3.24
+          - alpine-latest
+          - alpine-edge
+          - debian-12-slim
+          - debian-13-slim
+        arch: [ x86_64, aarch64 ]
+    runs-on: ${{ matrix.arch == 'aarch64' && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
 
     steps:
       - name: Checkout code
@@ -50,33 +39,102 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Determine the Docker tag
-        id: get_tag
-        run: |
-          if [[ "${BASE}" == "alpine-latest" ]]; then
-            echo "tag=latest ${BASE}" >> "$GITHUB_OUTPUT"
-          else
-            echo "tag=${BASE}" >> "$GITHUB_OUTPUT"
-          fi
+      - name: Determine build arguments
+        id: build_args
         env:
-          BASE: ${{ matrix.dist }}-${{ matrix.version }}
+          BASE: ${{ matrix.base }}
+        run: |
+          echo "dist=${BASE%%-*}" >> "${GITHUB_OUTPUT}"
+          echo "version=${BASE#*-}" >> "${GITHUB_OUTPUT}"
 
       - name: Build Container image
         uses: redhat-actions/buildah-build@061ffd31bb5c3f8733a6f9bbdf00a9fb02eb708c
         with:
           image: ghcr.io/${{ github.repository }}
-          tags: ${{ steps.get_tag.outputs.tag }}
+          tags: ci-${{ matrix.base }}-${{ matrix.arch }}
           containerfiles: ./dockerfile
           build-args: |
-            DIST=${{ matrix.dist }}
-            VERSION=${{ matrix.version }}
+            DIST=${{ steps.build_args.outputs.dist }}
+            VERSION=${{ steps.build_args.outputs.version }}
 
-      - name: Push image to GHCR
-        uses: redhat-actions/push-to-registry@3916dcf329473955be3059ef62c9c062ea1b9054
+      - name: Save OCI archive
+        env:
+          IMAGE: ghcr.io/${{ github.repository }}
+          BASE: ${{ matrix.base }}
+          ARCH: ${{ matrix.arch }}
+        run: |
+          mkdir -p out
+          podman save --format oci-archive -o "out/${BASE}-${ARCH}.tar" "${IMAGE}:ci-${BASE}-${ARCH}"
+
+      - name: Upload OCI archive
+        uses: actions/upload-artifact@v7
         with:
-          image: ghcr.io/${{ github.repository }}
-          tags: ${{ steps.get_tag.outputs.tag }}
+          name: image-${{ matrix.base }}-${{ matrix.arch }}
+          path: out/${{ matrix.base }}-${{ matrix.arch }}.tar
+          retention-days: 1
+          compression-level: 0
+
+  manifest:
+    name: Manifest ${{ matrix.base }}
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        base:
+          - alpine-3.19
+          - alpine-3.20
+          - alpine-3.21
+          - alpine-3.22
+          - alpine-3.23
+          - alpine-3.24
+          - alpine-latest
+          - alpine-edge
+          - debian-12-slim
+          - debian-13-slim
+
+    steps:
+      - name: Download OCI archives
+        uses: actions/download-artifact@v8
+        with:
+          pattern: image-${{ matrix.base }}-*
+          path: in
+          merge-multiple: true
+
+      - name: Load images into local storage
+        env:
+          BASE: ${{ matrix.base }}
+        run: |
+          set -euo pipefail
+          for arch in x86_64 aarch64; do
+            podman load -i "in/${BASE}-${arch}.tar"
+          done
+
+      - name: Log in to GitHub Container Registry
+        uses: redhat-actions/podman-login@2e76993ec4585e058ea832c23ee3d885970936af
+        with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Create & push multi-arch tags
+        env:
+          IMAGE: ghcr.io/${{ github.repository }}
+          BASE: ${{ matrix.base }}
+          AMD: ghcr.io/${{ github.repository }}:ci-${{ matrix.dist }}-x86_64
+          ARM: ghcr.io/${{ github.repository }}:ci-${{ matrix.dist }}-aarch64
+        run: |
+          set -euo pipefail
+
+          tags="${BASE}"
+          if [[ "${BASE}" == "alpine-latest" ]]; then
+            tags="latest ${BASE}"
+          fi
+
+          for tag in ${tags}; do
+            podman manifest rm "${IMAGE}:${tag}" 2>/dev/null || true
+            podman manifest create "${IMAGE}:${tag}"
+            podman manifest add "${IMAGE}:${tag}" "containers-storage:${AMD}"
+            podman manifest add "${IMAGE}:${tag}" "containers-storage:${ARM}"
+            podman manifest push --all "${IMAGE}:${tag}" "docker://${IMAGE}:${tag}"
+          done
