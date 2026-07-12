@@ -121,8 +121,8 @@ jobs:
         env:
           IMAGE: ghcr.io/${{ github.repository }}
           BASE: ${{ matrix.base }}
-          AMD: ghcr.io/${{ github.repository }}:ci-${{ matrix.dist }}-x86_64
-          ARM: ghcr.io/${{ github.repository }}:ci-${{ matrix.dist }}-aarch64
+          AMD: ghcr.io/${{ github.repository }}:ci-${{ matrix.base }}-x86_64
+          ARM: ghcr.io/${{ github.repository }}:ci-${{ matrix.base }}-aarch64
         run: |
           set -euo pipefail
 
