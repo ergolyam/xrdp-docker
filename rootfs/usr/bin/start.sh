@@ -57,12 +57,12 @@ fi
 UID=$(id -u "$USER")
 printf '%s\n' "$USER:$PASSWD" | chpasswd
 
+/usr/bin/set-layout.sh
+/usr/bin/gen-keys.sh
+
 if [ -f /entrypoint.sh ]; then
   /entrypoint.sh
 fi
-
-/usr/bin/set-layout.sh
-/usr/bin/gen-keys.sh
 
 if [ ! -f /etc/machine-id ]; then
   mkdir -p /var/run/dbus
