@@ -29,23 +29,24 @@ Treat it like an appliance you can build on: add your application, copy `/starta
     ```bash
     docker build -t xrdp-xterm .
     docker run -p 3389:3389 \
+        -v xrdp-keys:/keys \
         -e USER=demo -e PASSWD=secret \
-        xrdp-xterm
-    ```
-
-- Run with ssl keys:
-    ```bash
-    openssl req -x509 -newkey rsa:2048 -nodes -keyout /path/to/key.pem -out /path/to/cert.pem -days 365
-    ```
-    ```bash
-    docker run -p 3389:3389 \
-        -e USER=demo -e PASSWD=secret \
-        -v /path/to/key.pem:/key.pem:ro \
-        -v /path/to/cert.pem:/cert.pem:ro \
         xrdp-xterm
     ```
 
 - Connect to **`localhost:3389`** with any RDP client (username **demo**, password **secret**) you will land in a maximised `xterm`.
+
+### Required key storage
+
+A writable volume mounted at /keys is required. The container will not start without it.
+
+The container stores the XRDP TLS certificate, private key, and legacy RSA key material in this directory:
+
+- `/keys/cert.pem`
+- `/keys/key.pem`
+- `/keys/rsakeys.ini`
+
+The files are generated automatically on the first start and reused on subsequent starts. The container exits with an error if /keys does not exist or is not writable.
 
 ## Environment Variables
 
