@@ -79,6 +79,7 @@ ENV TZ=UTC
 
 COPY rootfs /
 
-EXPOSE 3389
+ENV USER_UID=1000
+ENV USER_GID=1000
 
 CMD ["/usr/bin/start.sh"]

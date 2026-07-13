@@ -12,9 +12,8 @@ fi
 
 : "${USER:?env USER is not set}"
 : "${PASSWD:?env PASSWD is not set}"
-
-USER_UID="${USER_UID:-1000}"
-USER_GID="${USER_GID:-1000}"
+: "${USER_UID:?env USER_UID is not set}"
+: "${USER_GID:?env USER_GID is not set}"
 
 validate_positive_integer() {
   case "$2" in
