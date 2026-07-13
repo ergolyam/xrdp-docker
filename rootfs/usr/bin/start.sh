@@ -13,6 +13,26 @@ fi
 : "${USER:?env USER is not set}"
 : "${PASSWD:?env PASSWD is not set}"
 
+USER_UID="${USER_UID:-1000}"
+USER_GID="${USER_GID:-1000}"
+
+validate_positive_integer() {
+  case "$2" in
+    ''|*[!0-9]*)
+      echo "$1 must be a positive integer, got: $2"
+      exit 1
+      ;;
+  esac
+
+  [ "$2" -gt 0 ] || {
+    echo "$1=0 is not allowed."
+    exit 1
+  }
+}
+
+validate_positive_integer USER_UID "$USER_UID"
+validate_positive_integer USER_GID "$USER_GID"
+
 if [ "${DARK_MODE:-}" = "true" ]; then
   : > /tmp/darkmode
 fi
@@ -23,9 +43,15 @@ fi
 
 if ! id "$USER" >/dev/null 2>&1; then
   if adduser --help 2>&1 | grep -- ' -D' >/dev/null 2>&1; then
-    adduser -D "$USER"
+    if ! getent group "$USER" >/dev/null 2>&1; then
+      addgroup -g "$USER_GID" "$USER"
+    fi
+    adduser -D -u "$USER_UID" -G "$USER" "$USER"
   else
-    adduser --disabled-password --gecos "" "$USER"
+    if ! getent group "$USER" >/dev/null 2>&1; then
+      addgroup --gid "$USER_GID" "$USER"
+    fi
+    adduser --disabled-password --gecos "" --uid "$USER_UID" --ingroup "$USER" "$USER"
   fi
 fi
 
