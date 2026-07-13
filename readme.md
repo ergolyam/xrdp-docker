@@ -29,8 +29,8 @@ Treat it like an appliance you can build on: add your application, copy `/starta
     ```bash
     docker build -t xrdp-xterm .
     docker run -p 3389:3389 \
-                -e USER=demo -e PASSWD=secret \
-                xrdp-xterm
+        -e USER=demo -e PASSWD=secret \
+        xrdp-xterm
     ```
 
 - Run with ssl keys:
@@ -39,10 +39,10 @@ Treat it like an appliance you can build on: add your application, copy `/starta
     ```
     ```bash
     docker run -p 3389:3389 \
-                -e USER=demo -e PASSWD=secret \
-                -v /path/to/key.pem:/key.pem:ro \
-                -v /path/to/cert.pem:/cert.pem:ro \
-                xrdp-xterm
+        -e USER=demo -e PASSWD=secret \
+        -v /path/to/key.pem:/key.pem:ro \
+        -v /path/to/cert.pem:/cert.pem:ro \
+        xrdp-xterm
     ```
 
 - Connect to **`localhost:3389`** with any RDP client (username **demo**, password **secret**) you will land in a maximised `xterm`.
@@ -55,6 +55,8 @@ The container is controlled via the following environment variables:
 |--------------|-------------|
 | `USER`       | Username for the RDP session. The specified user will be created automatically if it does not already exist. |
 | `PASSWD`     | Password for the RDP session user. It is applied on every container start. |
+| `USER_UID`   | (Optional) Numeric UID assigned when creating the RDP session user (default is `1000`). Must be a positive integer. |
+| `USER_GID`   | (Optional) Numeric GID assigned when creating the user's primary group (default is `1000`). Must be a positive integer. |
 | `TZ`         | (Optional) Time zone for the container (for example `Europe/Moscow`). Applied only when the corresponding zoneinfo file exists. |
 | `DARK_MODE`  | (Optional) If set to `true`, exports dark-theme variables for GTK and Qt applications. |
 | `PORT`       | (Optional) Port that XRDP will listen on (default is `3389`). Remember to publish the same port with Docker. |
