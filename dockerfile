@@ -73,8 +73,6 @@ RUN ./install-deps.sh ${DIST} main
 
 COPY --from=builder $PKG_DIR/ /
 
-RUN wget -qO- https://gitlab.alpinelinux.org/alpine/aports/-/raw/89dc4b937a7591002c9f8d437d0efe4eabaeea99/community/xrdp/xrdp.post-install | sh
-
 ENV TZ=UTC
 
 COPY rootfs /

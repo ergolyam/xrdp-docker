@@ -62,6 +62,7 @@ if [ -f /entrypoint.sh ]; then
 fi
 
 /usr/bin/set-layout.sh
+/usr/bin/gen-keys.sh
 
 if [ ! -f /etc/machine-id ]; then
   mkdir -p /var/run/dbus
